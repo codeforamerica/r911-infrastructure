@@ -1,0 +1,18 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AWSConfigSNSPolicy",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "config.amazonaws.com"
+            },
+            "Action": [
+                "sns:Publish"
+            ],
+            "Resource": [
+                "${topic}"
+            ]
+        }
+    ]
+}

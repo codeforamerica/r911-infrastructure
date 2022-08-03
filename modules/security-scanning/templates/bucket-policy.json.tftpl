@@ -1,0 +1,46 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AWSConfigBucketPermissionsCheck",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "config.amazonaws.com"
+            },
+            "Action": [
+                "s3:GetBucketAcl"
+            ],
+            "Resource": "arn:${partition}:s3:::${bucket}"
+        },
+        {
+            "Sid": "AWSConfigBucketDelivery",
+            "Effect": "Allow",
+            "Principal": {
+                "Service": "config.amazonaws.com"
+            },
+            "Action": [
+                "s3:PutObject"
+            ],
+            "Resource": "arn:${partition}:s3:::${bucket}/AWSLogs/${account}/*"
+        },
+        {
+            "Sid": "AllowSSLRequestsOnly",
+            "Effect": "Deny",
+            "Principal": {
+                "Service": "config.amazonaws.com"
+            },
+            "Action": [
+                "s3:*"
+            ],
+            "Resource": [
+                "arn:${partition}:s3:::${bucket}",
+                "arn:${partition}:s3:::${bucket}/*"
+            ],
+            "Condition": {
+                "Bool": {
+                    "aws:SecureTransport": false
+                }
+            }
+        }
+    ]
+}

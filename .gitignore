@@ -1,0 +1,8 @@
+# Ignore IDE configs.
+.idea
+*.iml
+
+# Ignore local files created by terraform.
+.terraform/
+*.tfstate
+*.tfstate.backup
