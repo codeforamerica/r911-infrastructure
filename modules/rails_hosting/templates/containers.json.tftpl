@@ -1,0 +1,100 @@
+[
+  {
+    "dnsSearchDomains": null,
+    "environmentFiles": null,
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "secretOptions": null,
+      "options": {
+        "awslogs-group": "${log_group}",
+        "awslogs-region": "${region}",
+        "awslogs-stream-prefix": "ecs"
+      }
+    },
+    "entryPoint": null,
+    "portMappings": [
+      {
+        "hostPort": 80,
+        "protocol": "tcp",
+        "containerPort": 80
+      }
+    ],
+    "command": ${command},
+    "linuxParameters": null,
+    "cpu": 0,
+    "environment": [
+  %{ for k, v in environment_variables ~}
+      {
+        "name": "${k}",
+        "value": "${v}"
+      },
+  %{ endfor ~}
+      {
+        "name": "PORT",
+        "value": "80"
+      },
+      {
+        "name": "RACK_ENV",
+        "value": "${rails_environment}"
+      },
+      {
+        "name": "RAILS_ENV",
+        "value": "${rails_environment}"
+      },
+      {
+        "name": "RAILSLOGTO_STDOUT",
+        "value": "true"
+      },
+      {
+        "name": "RAILSSERVESTATIC_FILES",
+        "value": "true"
+      }
+    ],
+    "resourceRequirements": null,
+    "ulimits": null,
+    "dnsServers": null,
+    "mountPoints": [],
+    "workingDirectory": null,
+    "secrets": [
+        {
+          "valueFrom": "${db_secret_arn}:host::",
+          "name": "RAILS_DB_HOST"
+        },
+        {
+          "valueFrom": "${db_secret_arn}:username::",
+          "name": "RAILS_DB_USER"
+        },
+        {
+          "valueFrom": "${db_secret_arn}:password::",
+          "name": "RAILS_DB_PASSWORD"
+        },
+        {
+          "valueFrom": "${keybase_secret_arn}",
+          "name": "SECRET_KEY_BASE"
+        }
+    ],
+    "dockerSecurityOptions": null,
+    "memory": null,
+    "memoryReservation": null,
+    "volumesFrom": [],
+    "stopTimeout": null,
+    "image": "${image_repo}:${image_tag}",
+    "startTimeout": null,
+    "firelensConfiguration": null,
+    "dependsOn": null,
+    "disableNetworking": null,
+    "interactive": null,
+    "healthCheck": null,
+    "essential": true,
+    "links": null,
+    "hostname": null,
+    "extraHosts": null,
+    "pseudoTerminal": null,
+    "user": null,
+    "readonlyRootFilesystem": null,
+    "dockerLabels": null,
+    "systemControls": null,
+    "privileged": null,
+    "name": "web"
+  }
+]
