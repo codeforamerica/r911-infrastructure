@@ -1,0 +1,9 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo "Build started on $(date)"
+      - echo "Running database migrations"
+      - aws ecs run-task --launch-type FARGATE --cluster ${cluster_name} --task-definition ${task_definition} --network-configuration "awsvpcConfiguration={subnets=[${subnets}],securityGroups=[${security_groups}]}"
+      - echo "Build completed on $(date)"

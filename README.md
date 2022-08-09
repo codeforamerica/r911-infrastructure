@@ -4,6 +4,8 @@ This repository includes the infrastructure as code (IaC) for Code for America's
 Reimagine911 project. The infrastructure components are modularized, allowing
 them to be reused as needed.
 
+![](https://lucid.app/publicSegments/view/c219364e-1acc-4504-b03e-c66d70b80af8/image.png)
+
 ## Accounts
 
 Account configurations include components than only need to be deployed once for
@@ -20,6 +22,7 @@ pipeline.
 | Name              | Description                                                           |
 |-------------------|-----------------------------------------------------------------------|
 | backend           | Teraform backend configuration.                                       |
+| ci_cd             | Ci/CD pipeline using CodePipeline.                                    |
 | networking        | VPC, subnets, and related routing confiigurations.                    |
 | rails_hosting     | Ruby on Rails hosting on ECS Fargate with Aurora Postgres serverless. |
 | security_scanning | Account security scanning configuration using Security Hub.           |

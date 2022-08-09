@@ -1,0 +1,35 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeSecurityGroups",
+                "ec2:DescribeVpcs"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateNetworkInterfacePermission"
+            ],
+            "Resource": "arn:${partition}:ec2:${region}:${account_id}:network-interface/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:AuthorizedService": "codebuild.amazonaws.com"
+                },
+                "ArnLike": {
+                    "ec2:Subnet": [
+                        "${join("\",\n\"", subnet_arns)}"
+                    ]
+                }
+            }
+        }
+    ]
+}

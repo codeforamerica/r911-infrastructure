@@ -1,0 +1,23 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowECSAccess",
+            "Effect": "Allow",
+            "Resource": "${task_arn}",
+            "Action": [
+                "ecs:RunTask"
+            ]
+        },
+        {
+            "Sid": "AllowIAMAccess",
+            "Effect": "Allow",
+            "Resource": [
+                "${join("\",\n\"", role_arns)}"
+            ],
+            "Action": [
+                "iam:PassRole"
+            ]
+        }
+    ]
+}

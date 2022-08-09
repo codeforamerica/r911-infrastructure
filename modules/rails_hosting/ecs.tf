@@ -53,7 +53,7 @@ resource "aws_ecs_task_definition" "web" {
 resource "aws_ecs_service" "web" {
   name                              = "${local.prefix}-web"
   cluster                           = aws_ecs_cluster.web.id
-  task_definition                   = aws_ecs_task_definition.web.arn
+  task_definition                   = local.web_task_arn
   enable_ecs_managed_tags           = true
   propagate_tags                    = "SERVICE"
   health_check_grace_period_seconds = 500

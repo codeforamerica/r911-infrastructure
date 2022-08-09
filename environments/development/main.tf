@@ -2,6 +2,7 @@
 # * Email sending
 # * S3 for file uploads
 # * Blue/Green deployments
+# * Rollbacks
 # * Monitoring & Alerting
 # * Lambda to clean up empty log streams
 # * Backups
@@ -43,4 +44,22 @@ module "hosting" {
     LAUNCHY_DRY_RUN : true,
     BROWSER : "/dev/null",
   }
+}
+
+module "ci_cd" {
+  source = "../../modules/ci_cd"
+
+  project               = "r911"
+  region                = "us-east-1"
+  environment           = "development"
+  repository            = "codeforamerica/classifyr"
+  branch                = "main"
+  cluster_name          = module.hosting.web_cluster_name
+  service_name          = module.hosting.web_service_name
+  task_execution_role   = module.hosting.task_task_definition.execution_role_arn
+  task_task_definition  = module.hosting.task_task_definition.id
+  vpc_id                = module.networking.vpc_id
+  log_retention         = 1
+  key_recovery_period   = 7
+  image_repository_name = module.hosting.image_repository.name
 }

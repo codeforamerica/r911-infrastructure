@@ -12,11 +12,11 @@ output "endpoint" {
 }
 
 output "image_repository" {
-  value = aws_ecr_repository.containers.repository_url
+  value = aws_ecr_repository.containers
 }
 
 output "task_task_definition" {
-  value = aws_ecs_task_definition.db_migrate.id
+  value = aws_ecs_task_definition.db_migrate
 }
 
 output "web_cluster_name" {

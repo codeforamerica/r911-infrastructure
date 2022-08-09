@@ -13,6 +13,15 @@ locals {
     rails_environment : local.rails_environment,
     region : var.region,
   }
+
+  # The task definition may be managed outside of terraform (such as by a CI/CD
+  # pipeline). Make sure we know the latest version so that we can use it for
+  # the service.
+  web_task_arn = (
+    data.aws_ecs_task_definition.web_latest.revision > aws_ecs_task_definition.web.revision
+    ? data.aws_ecs_task_definition.web_latest.arn
+    : aws_ecs_task_definition.web.arn
+  )
 }
 
 data "aws_caller_identity" "identity" {}
@@ -50,6 +59,10 @@ data "aws_subnets" "private" {
 
 data "aws_elb_service_account" "web" {
   region = var.region
+}
+
+data "aws_ecs_task_definition" "web_latest" {
+  task_definition = aws_ecs_task_definition.web.family
 }
 
 resource "random_id" "keybase" {
