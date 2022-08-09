@@ -1,0 +1,18 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowSendingFromECS",
+      "Effect": "Allow",
+      "Resource": "${domain_arn}",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail",
+        "ses:SendTemplatedEmail"
+      ],
+      "Principal": {
+        "AWS": "${role_arn}"
+      }
+    }
+  ]
+}

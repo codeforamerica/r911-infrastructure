@@ -64,6 +64,25 @@ resource "aws_iam_role" "web_task" {
     })
   }
 
+  inline_policy {
+    name = "ecs-send-email"
+
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Effect = "Allow"
+          Action = [
+            "ses:SendEmail",
+            "ses:SendRawEmail",
+            "ses:SendTemplatedEmail"
+          ]
+          Resource = "*"
+        }
+      ]
+    })
+  }
+
   managed_policy_arns = [
     "arn:${data.aws_partition.current.partition}:iam::aws:policy/CloudWatchFullAccess",
     "arn:${data.aws_partition.current.partition}:iam::aws:policy/AmazonSSMFullAccess",

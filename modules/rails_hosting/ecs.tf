@@ -59,8 +59,7 @@ resource "aws_ecs_service" "web" {
   health_check_grace_period_seconds = 500
   desired_count                     = 1
   launch_type                       = "FARGATE"
-
-  iam_role = ""
+  enable_execute_command            = var.enable_execute_command
 
   load_balancer {
     target_group_arn = aws_lb_target_group.web.arn

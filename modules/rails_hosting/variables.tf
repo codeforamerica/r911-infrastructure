@@ -10,6 +10,12 @@ variable "database_username" {
   description = "Username for the master database user."
 }
 
+variable "enable_execute_command" {
+  type        = bool
+  default     = false
+  description = "Enable command execution in service containers. Useful for debugging in non-production environments. Does not apply to currently running tasks."
+}
+
 variable "environment" {
   type        = string
   default     = "development"

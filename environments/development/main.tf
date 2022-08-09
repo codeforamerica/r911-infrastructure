@@ -1,5 +1,4 @@
 # TODO:
-# * Email sending
 # * S3 for file uploads
 # * Blue/Green deployments
 # * Rollbacks
@@ -39,6 +38,7 @@ module "hosting" {
   key_recovery_period      = 7
   secret_recovery_period   = 0
   skip_db_final_snapshot   = true
+  enable_execute_command   = true
 
   environment_variables = {
     LAUNCHY_DRY_RUN : true,
