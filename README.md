@@ -4,7 +4,7 @@ This repository includes the infrastructure as code (IaC) for Code for America's
 Reimagine911 project. The infrastructure components are modularized, allowing
 them to be reused as needed.
 
-![](https://lucid.app/publicSegments/view/c219364e-1acc-4504-b03e-c66d70b80af8/image.png)
+![][1]
 
 ## Accounts
 
@@ -26,3 +26,5 @@ pipeline.
 | networking        | VPC, subnets, and related routing confiigurations.                    |
 | rails_hosting     | Ruby on Rails hosting on ECS Fargate with Aurora Postgres serverless. |
 | security_scanning | Account security scanning configuration using Security Hub.           |
+
+[1]: https://lucid.app/publicSegments/view/cb1e828c-2415-407c-be2b-abe564f5c42b/image.png
