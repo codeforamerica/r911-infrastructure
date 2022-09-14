@@ -31,7 +31,7 @@ module "networking" {
 
 module "hosting" {
   source     = "../../modules/rails_hosting"
-  depends_on = [module.networking]
+  depends_on = [module.networking.vpc_id]
 
   project                  = local.project
   region                   = local.region
@@ -58,7 +58,7 @@ module "hosting" {
 
 module "ci_cd" {
   source     = "../../modules/ci_cd"
-  depends_on = [module.hosting]
+  depends_on = [module.hosting.web_cluster_name]
 
   project               = local.project
   region                = local.region

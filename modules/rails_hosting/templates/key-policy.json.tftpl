@@ -73,6 +73,17 @@
           "kms:EncryptionContext:aws:logs:arn": "arn:${partition}:logs:${region}:${account_id}:log-group:*"
         }
       }
+    },
+    {
+      "Sid": "Allow Fargate containers to encrypt objects",
+      "Effect": "Allow",
+      "Resource": "*",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Action": [
+        "kms:GenerateDataKey*"
+      ]
     }
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowSSLRequestsOnly",
+      "Effect": "Deny",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "s3:*"
+      ],
+      "Resource": [
+        "${bucket_arn}",
+        "${bucket_arn}/*"
+      ],
+      "Condition": {
+        "Bool": {
+          "aws:SecureTransport": false
+        }
+      }
+    }
+  ]
+}
