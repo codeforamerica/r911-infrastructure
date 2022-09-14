@@ -6,20 +6,26 @@ terraform {
   }
 }
 
+locals {
+  project     = "solutions-eng"
+  region      = "us-east-1"
+  environment = "sandbox"
+}
+
 module "backend" {
   source = "../../modules/backend"
 
-  project             = "solutions-eng"
-  region              = "us-east-1"
-  environment         = "sandbox"
+  project             = local.project
+  region              = local.region
+  environment         = local.environment
   key_recovery_period = 7
 }
 
 module "security-scanning" {
   source = "../../modules/security-scanning"
 
-  project            = "solutions-eng"
-  region             = "us-east-1"
-  environment        = "sandbox"
+  project            = local.project
+  region             = local.region
+  environment        = local.environment
   notification_email = "jarmes@codeforamerica.org"
 }

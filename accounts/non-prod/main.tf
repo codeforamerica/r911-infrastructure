@@ -6,20 +6,26 @@ terraform {
   }
 }
 
+locals {
+  project     = "r911"
+  region      = "us-east-1"
+  environment = "non-prod"
+}
+
 module "backend" {
   source = "../../modules/backend"
 
-  project             = "r911"
-  region              = "us-east-1"
-  environment         = "non-prod"
+  project             = local.project
+  region              = local.region
+  environment         = local.environment
   key_recovery_period = 7
 }
 
 module "security-scanning" {
   source = "../../modules/security-scanning"
 
-  project            = "r911"
-  region             = "us-east-1"
-  environment        = "non-prod"
+  project            = local.project
+  region             = local.region
+  environment        = local.environment
   notification_email = "jarmes@codeforamerica.org"
 }
