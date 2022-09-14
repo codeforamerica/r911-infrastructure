@@ -14,23 +14,28 @@ terraform {
   }
 }
 
+locals {
+  project     = "r911"
+  region      = "us-east-1"
+  environment = "development"
+}
+
 module "networking" {
   source = "../../modules/networking"
 
-  project            = "r911"
-  region             = "us-east-1"
-  environment        = "development"
+  project            = local.project
+  region             = local.region
+  environment        = local.environment
   single_nat_gateway = true
 }
 
 module "hosting" {
-  source = "../../modules/rails_hosting"
+  source     = "../../modules/rails_hosting"
+  depends_on = [module.networking]
 
-  force_delete = true
-
-  project                  = "r911"
-  region                   = "us-east-1"
-  environment              = "development"
+  project                  = local.project
+  region                   = local.region
+  environment              = local.environment
   log_retention            = 1
   vpc_id                   = module.networking.vpc_id
   url_domain               = "nprd.classifyr.org"
@@ -39,19 +44,25 @@ module "hosting" {
   secret_recovery_period   = 0
   skip_db_final_snapshot   = true
   enable_execute_command   = true
+  passive_waf              = false
+  desired_containers       = 3
+  idle_timeout             = 300
+  deployment_rollback      = false
 
   environment_variables = {
     LAUNCHY_DRY_RUN : true,
     BROWSER : "/dev/null",
+    RAILS_EMAIL_DOMAIN : "development.nprd.classifyr.org",
   }
 }
 
 module "ci_cd" {
-  source = "../../modules/ci_cd"
+  source     = "../../modules/ci_cd"
+  depends_on = [module.hosting]
 
-  project               = "r911"
-  region                = "us-east-1"
-  environment           = "development"
+  project               = local.project
+  region                = local.region
+  environment           = local.environment
   repository            = "codeforamerica/classifyr"
   branch                = "main"
   cluster_name          = module.hosting.web_cluster_name
