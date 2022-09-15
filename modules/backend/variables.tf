@@ -19,9 +19,3 @@ variable "project" {
   type        = string
   description = "Project that these resources are supporting."
 }
-
-variable "region" {
-  type        = string
-  default     = "us-east-1"
-  description = "The AWS region to manage resources in."
-}

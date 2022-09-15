@@ -16,7 +16,6 @@ module "backend" {
   source = "../../modules/backend"
 
   project             = local.project
-  region              = local.region
   environment         = local.environment
   key_recovery_period = 7
 }

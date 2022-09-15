@@ -43,12 +43,6 @@ variable "project" {
   description = "Project that these resources are supporting."
 }
 
-variable "rails_environment" {
-  type        = string
-  default     = ""
-  description = "Rails environment. Defaults to the same value as \"environment\" if not set."
-}
-
 variable "region" {
   type        = string
   default     = "us-east-1"

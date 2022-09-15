@@ -9,7 +9,6 @@ locals {
     region : var.region,
   }
   prefix            = "${var.project}-${var.environment}"
-  rails_environment = var.rails_environment != "" ? var.rails_environment : var.environment
 }
 
 data "aws_caller_identity" "identity" {}
@@ -20,17 +19,8 @@ data "aws_ecr_repository" "containers" {
   name = var.image_repository_name
 }
 
-data "aws_ecs_cluster" "web" {
-  cluster_name = var.cluster_name
-}
-
 data "aws_ecs_task_definition" "task" {
   task_definition = var.task_task_definition
-}
-
-data "aws_ecs_service" "web" {
-  service_name = var.service_name
-  cluster_arn  = data.aws_ecs_cluster.web.arn
 }
 
 data "aws_subnets" "private" {
