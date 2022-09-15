@@ -18,7 +18,6 @@ resource "aws_wafv2_web_acl" "web" {
     priority = 0
 
     override_action {
-
       dynamic "count" {
         for_each = { for k, v in [var.passive_waf] : k => v if v }
         content {}
@@ -70,6 +69,65 @@ resource "aws_wafv2_web_acl" "web" {
       managed_rule_group_statement {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
+
+        excluded_rule {
+          name = "SizeRestrictions_BODY"
+        }
+      }
+    }
+  }
+
+  rule {
+    # TODO: This rule is currently hard coded to the /data_sets path. Make that
+    # configurable.
+    name     = "${local.prefix}-web-file-upload"
+    priority = 2
+
+    action {
+      dynamic "count" {
+        for_each = { for k, v in [var.passive_waf] : k => v if v }
+        content {}
+      }
+
+      dynamic "block" {
+        for_each = { for k, v in [var.passive_waf] : k => v if !v }
+        content {}
+      }
+    }
+
+    visibility_config {
+      cloudwatch_metrics_enabled = true
+      metric_name                = "${local.prefix}-web-file-upload"
+      sampled_requests_enabled   = true
+    }
+
+    statement {
+      and_statement {
+        statement {
+          label_match_statement {
+            key   = "awswaf:managed:aws:core-rule-set:SizeRestrictions_Body"
+            scope = "LABEL"
+          }
+        }
+        statement {
+          not_statement {
+            statement {
+              byte_match_statement {
+                positional_constraint = "EXACTLY"
+                search_string         = "/data_sets"
+
+                field_to_match {
+                  uri_path {}
+                }
+
+                text_transformation {
+                  priority = 0
+                  type     = "NONE"
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
