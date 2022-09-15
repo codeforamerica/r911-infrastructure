@@ -2,10 +2,12 @@ locals {
   container_log_group = "/aws/ecs/${var.project}/${var.environment}/web"
   prefix              = "${var.project}-${var.environment}"
   rails_environment   = var.rails_environment != "" ? var.rails_environment : var.environment
+  subdomain           = var.subdomain != "" ? var.subdomain : var.environment
   container_template_vars = {
     command : "null",
-    environment_variables : var.environment_variables,
     db_secret_arn : aws_secretsmanager_secret.db_master.arn,
+    environment_variables : var.environment_variables,
+    files_bucket : aws_s3_bucket.files.bucket,
     image_repo : aws_ecr_repository.containers.repository_url,
     image_tag : var.image_tag,
     keybase_secret_arn : aws_ssm_parameter.web-keybase.arn,

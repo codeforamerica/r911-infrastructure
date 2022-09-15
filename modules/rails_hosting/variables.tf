@@ -10,6 +10,18 @@ variable "database_username" {
   description = "Username for the master database user."
 }
 
+variable "deployment_rollback" {
+  type        = bool
+  default     = false
+  description = "Whether or not to perform a rollback when a Fargate deployment fails."
+}
+
+variable "desired_containers" {
+  type        = string
+  default     = 3
+  description = "Desired number of containers to server the application."
+}
+
 variable "enable_execute_command" {
   type        = bool
   default     = false
@@ -32,6 +44,12 @@ variable "force_delete" {
   type        = bool
   default     = false
   description = "Forcefully delete resources. USE WITH CAUTION!"
+}
+
+variable "idle_timeout" {
+  type        = number
+  default     = 60
+  description = "Timeout for idle connections."
 }
 
 variable "image_tag" {
@@ -101,6 +119,12 @@ variable "skip_db_final_snapshot" {
   type        = bool
   default     = false
   description = "Skip the final snapshot when destroying the database cluster. USE WITH CAUTION!"
+}
+
+variable "subdomain" {
+  type        = string
+  default     = ""
+  description = "Subdomain for the hosted application. Defaults to the environment name."
 }
 
 variable "untagged_image_retention" {

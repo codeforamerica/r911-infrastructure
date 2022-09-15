@@ -1,5 +1,5 @@
 resource "aws_ses_domain_identity" "email" {
-  domain = aws_route53_record.web.fqdn
+  domain = var.subdomain != "www" ? aws_route53_record.web.fqdn : var.url_domain
 }
 
 resource "aws_route53_record" "email" {

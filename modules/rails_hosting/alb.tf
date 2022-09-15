@@ -20,6 +20,7 @@ resource "aws_lb" "web" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.web_public.id]
   subnets            = data.aws_subnets.public.ids
+  idle_timeout       = var.idle_timeout
 
   access_logs {
     enabled = true
@@ -28,6 +29,8 @@ resource "aws_lb" "web" {
 }
 
 resource "aws_lb_listener" "web_https" {
+  depends_on = [aws_acm_certificate_validation.web]
+
   load_balancer_arn = aws_lb.web.arn
   port              = 443
   protocol          = "HTTPS"

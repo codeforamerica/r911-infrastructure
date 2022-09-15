@@ -84,3 +84,8 @@ variable "vpc_id" {
   type        = string
   description = "ID of the VPC to deploy resources into."
 }
+
+variable "web_security_group_id" {
+  type        = string
+  description = "The security group for private resources in the web tier."
+}
