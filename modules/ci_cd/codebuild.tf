@@ -78,7 +78,7 @@ resource "aws_codebuild_project" "db_migrate" {
       cluster_name : var.cluster_name
       task_definition : var.task_task_definition
       subnets : join(",", data.aws_subnets.private.ids)
-      security_groups : aws_security_group.codebuild.id
+      security_groups : var.web_security_group_id
     })
   }
 

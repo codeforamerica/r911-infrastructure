@@ -4,7 +4,7 @@ data "aws_route53_zone" "domain" {
 
 resource "aws_route53_record" "web" {
   zone_id = data.aws_route53_zone.domain.zone_id
-  name    = "${var.environment}.${var.url_domain}"
+  name    = "${local.subdomain}.${var.url_domain}"
   type    = "CNAME"
   ttl     = 300
   records = [aws_lb.web.dns_name]

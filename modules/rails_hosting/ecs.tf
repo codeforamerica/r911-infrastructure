@@ -57,7 +57,7 @@ resource "aws_ecs_service" "web" {
   enable_ecs_managed_tags           = true
   propagate_tags                    = "SERVICE"
   health_check_grace_period_seconds = 500
-  desired_count                     = 1
+  desired_count                     = var.desired_containers
   launch_type                       = "FARGATE"
   enable_execute_command            = var.enable_execute_command
 
@@ -69,7 +69,7 @@ resource "aws_ecs_service" "web" {
 
   deployment_circuit_breaker {
     enable   = true
-    rollback = false
+    rollback = var.deployment_rollback
   }
 
   network_configuration {
