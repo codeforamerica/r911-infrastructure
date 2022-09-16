@@ -66,5 +66,6 @@ module "ci_cd" {
   log_retention         = 1
   key_recovery_period   = 7
   image_repository_name = module.hosting.image_repository.name
+  logging_bucket        = module.hosting.logging_bucket.id
   web_security_group_id = module.hosting.web_security_group.id
 }

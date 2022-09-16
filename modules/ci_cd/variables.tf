@@ -37,6 +37,11 @@ variable "log_retention" {
   description = "Number of days logs are retained (0 for indefinite)."
 }
 
+variable "logging_bucket" {
+  type        = string
+  description = "Name of the bucket to use for logs."
+}
+
 variable "project" {
   type        = string
   default     = "r911"

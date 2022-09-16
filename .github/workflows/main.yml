@@ -91,3 +91,14 @@ jobs:
           done
 
           exit $exit_code
+
+  tfsec:
+    name: tfsec
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+      - name: Runs tfsec
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          additional_args: --config-file tfsec.yml

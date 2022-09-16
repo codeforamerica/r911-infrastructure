@@ -22,6 +22,11 @@ resource "aws_ecr_lifecycle_policy" "containers" {
 
 resource "aws_ecs_cluster" "web" {
   name = "${local.prefix}-web"
+
+  setting {
+    name  = "containerInsights"
+    value = "enabled"
+  }
 }
 
 resource "aws_ecs_task_definition" "web" {

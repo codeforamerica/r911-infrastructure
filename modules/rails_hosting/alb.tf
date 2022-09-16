@@ -15,12 +15,15 @@ resource "aws_lb_target_group" "web" {
 }
 
 resource "aws_lb" "web" {
-  name               = "${local.prefix}-web"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [aws_security_group.web_public.id]
-  subnets            = data.aws_subnets.public.ids
-  idle_timeout       = var.idle_timeout
+  name                       = "${local.prefix}-web"
+  load_balancer_type         = "application"
+  security_groups            = [aws_security_group.web_public.id]
+  subnets                    = data.aws_subnets.public.ids
+  idle_timeout               = var.idle_timeout
+  drop_invalid_header_fields = true
+
+  #tfsec:ignore:aws-elb-alb-not-public
+  internal = false
 
   access_logs {
     enabled = true
@@ -35,7 +38,7 @@ resource "aws_lb_listener" "web_https" {
   port              = 443
   protocol          = "HTTPS"
   certificate_arn   = aws_acm_certificate.web.arn
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  ssl_policy        = "ELBSecurityPolicy-TLS-1-2-2017-01"
 
 
   default_action {

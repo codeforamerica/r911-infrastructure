@@ -8,7 +8,8 @@ locals {
     prefix : local.prefix,
     region : var.region,
   }
-  prefix            = "${var.project}-${var.environment}"
+  aws_logs_path = "/AWSLogs/${data.aws_caller_identity.identity.account_id}"
+  prefix        = "${var.project}-${var.environment}"
 }
 
 data "aws_caller_identity" "identity" {}

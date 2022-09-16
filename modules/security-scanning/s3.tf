@@ -28,7 +28,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "config" {
 
     apply_server_side_encryption_by_default {
       sse_algorithm     = "aws:kms"
-      kms_master_key_id = aws_kms_key.backend.arn
+      kms_master_key_id = aws_kms_key.security.arn
     }
   }
 }
@@ -39,6 +39,12 @@ resource "aws_s3_bucket_versioning" "config" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_logging" "config" {
+  bucket        = aws_s3_bucket.config.id
+  target_bucket = aws_s3_bucket.config.id
+  target_prefix = "${local.aws_logs_path}/s3accesslogs/${aws_s3_bucket.config.id}"
 }
 
 resource "aws_s3_bucket_policy" "config" {

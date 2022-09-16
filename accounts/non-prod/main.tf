@@ -23,8 +23,7 @@ module "backend" {
 module "security-scanning" {
   source = "../../modules/security-scanning"
 
-  project            = local.project
-  region             = local.region
-  environment        = local.environment
-  notification_email = "jarmes@codeforamerica.org"
+  project     = local.project
+  region      = local.region
+  environment = local.environment
 }

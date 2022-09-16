@@ -24,9 +24,17 @@ resource "aws_serverlessapplicationrepository_cloudformation_stack" "db_master_r
 }
 
 resource "aws_secretsmanager_secret" "db_master" {
-  name                    = "/${var.project}/${var.environment}/database/master"
+  name_prefix             = "/${var.project}/${var.environment}/database/master-"
   description             = "Master database credentials."
   recovery_window_in_days = var.secret_recovery_period
+  kms_key_id              = aws_kms_key.hosting.arn
+
+  lifecycle {
+    # The secret rotation lambda will fail if the host name of a cluster is
+    # changed, so we need to create a new secret when that happens.
+    replace_triggered_by  = [aws_rds_cluster.db.endpoint]
+    create_before_destroy = true
+  }
 }
 
 resource "aws_secretsmanager_secret_version" "db_secret" {

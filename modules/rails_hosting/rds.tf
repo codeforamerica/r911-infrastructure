@@ -4,14 +4,19 @@ resource "aws_db_subnet_group" "db" {
 }
 
 resource "aws_rds_cluster" "db" {
-  cluster_identifier     = local.prefix
-  db_subnet_group_name   = aws_db_subnet_group.db.name
-  engine                 = "aurora-postgresql"
-  engine_mode            = "provisioned"
-  engine_version         = "14.3"
-  vpc_security_group_ids = [aws_security_group.db_access.id]
-  skip_final_snapshot    = var.skip_db_final_snapshot
-  copy_tags_to_snapshot  = true
+  cluster_identifier_prefix = "${local.prefix}-"
+  db_subnet_group_name      = aws_db_subnet_group.db.name
+  engine                    = "aurora-postgresql"
+  engine_mode               = "provisioned"
+  engine_version            = "14.3"
+  vpc_security_group_ids    = [aws_security_group.db_access.id]
+  skip_final_snapshot       = var.skip_db_final_snapshot
+  copy_tags_to_snapshot     = true
+  snapshot_identifier       = var.database_starting_snapshot
+
+  storage_encrypted       = true
+  kms_key_id              = aws_kms_key.hosting.arn
+  backup_retention_period = var.database_backup_retention
 
   master_password = data.aws_secretsmanager_random_password.db_master.random_password
   master_username = var.database_username
@@ -24,7 +29,8 @@ resource "aws_rds_cluster" "db" {
   }
 
   lifecycle {
-    ignore_changes = [master_password]
+    create_before_destroy = true
+    ignore_changes        = [cluster_identifier_prefix, master_password]
   }
 
   depends_on = [aws_cloudwatch_log_group.logs]
@@ -32,7 +38,7 @@ resource "aws_rds_cluster" "db" {
 
 resource "aws_rds_cluster_instance" "db" {
   count               = var.database_instances
-  identifier          = "${local.prefix}-${count.index + 1}"
+  identifier_prefix   = "${local.prefix}-${count.index + 1}-"
   cluster_identifier  = aws_rds_cluster.db.id
   instance_class      = "db.serverless"
   engine              = aws_rds_cluster.db.engine
@@ -41,7 +47,10 @@ resource "aws_rds_cluster_instance" "db" {
   promotion_tier      = 1
   monitoring_role_arn = aws_iam_role.db_monitoring.arn
 
+  performance_insights_enabled    = true
+  performance_insights_kms_key_id = aws_kms_key.hosting.arn
+
   lifecycle {
-    ignore_changes = [identifier]
+    create_before_destroy = true
   }
 }

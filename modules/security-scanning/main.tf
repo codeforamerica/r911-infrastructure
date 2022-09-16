@@ -1,14 +1,16 @@
 locals {
-  prefix = "${var.project}-${var.environment}"
+  prefix        = "${var.project}-${var.environment}"
+  aws_logs_path = "/AWSLogs/${data.aws_caller_identity.identity.account_id}"
 }
 
 data "aws_caller_identity" "identity" {}
 
 data "aws_partition" "current" {}
 
-resource "aws_kms_key" "backend" {
+resource "aws_kms_key" "security" {
   description             = "Security encryption key for ${var.project} ${var.environment}"
   deletion_window_in_days = var.key_recovery_period
+  enable_key_rotation     = true
   policy = templatefile("${path.module}/templates/key-policy.json.tftpl", {
     account_id : data.aws_caller_identity.identity.account_id,
     partition : data.aws_partition.current.partition,
@@ -16,12 +18,10 @@ resource "aws_kms_key" "backend" {
   })
 }
 
-resource "aws_kms_alias" "backend" {
+resource "aws_kms_alias" "security" {
   name          = "alias/${var.project}/${var.environment}/security"
-  target_key_id = aws_kms_key.backend.id
+  target_key_id = aws_kms_key.security.id
 }
-
-
 
 resource "aws_securityhub_account" "account" {}
 

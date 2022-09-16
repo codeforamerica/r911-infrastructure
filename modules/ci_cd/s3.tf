@@ -40,3 +40,9 @@ resource "aws_s3_bucket_versioning" "artifacts" {
     status = "Enabled"
   }
 }
+
+resource "aws_s3_bucket_logging" "artifacts" {
+  bucket        = aws_s3_bucket.artifacts.id
+  target_bucket = var.logging_bucket
+  target_prefix = "${local.aws_logs_path}/s3accesslogs/${aws_s3_bucket.artifacts.id}"
+}

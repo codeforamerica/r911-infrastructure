@@ -1,6 +1,7 @@
 resource "aws_kms_key" "codepipeline" {
   description             = "Hosting encryption key for ${var.project} ${var.environment}"
   deletion_window_in_days = var.key_recovery_period
+  enable_key_rotation     = true
   policy = templatefile("${path.module}/templates/key-policy.json.tftpl", {
     account_id : data.aws_caller_identity.identity.account_id,
     partition : data.aws_partition.current.partition,

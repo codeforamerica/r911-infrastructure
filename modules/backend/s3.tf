@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "${var.project}-${var.environment}-terraform"
+  bucket = "${local.prefix}-terraform"
 
   lifecycle {
     prevent_destroy = true
@@ -39,6 +39,12 @@ resource "aws_s3_bucket_versioning" "terraform_state" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_logging" "terraform_state" {
+  bucket        = aws_s3_bucket.terraform_state.id
+  target_bucket = aws_s3_bucket.terraform_state.id
+  target_prefix = "${local.aws_logs_path}/s3accesslogs/${aws_s3_bucket.terraform_state.id}"
 }
 
 resource "aws_s3_bucket_policy" "terraform_state" {

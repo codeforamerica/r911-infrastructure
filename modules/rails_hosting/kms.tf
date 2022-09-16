@@ -1,12 +1,14 @@
 resource "aws_kms_key" "hosting" {
   description             = "Hosting encryption key for ${var.project} ${var.environment}"
   deletion_window_in_days = var.key_recovery_period
+  enable_key_rotation     = true
   policy = templatefile("${path.module}/templates/key-policy.json.tftpl", {
     account_id : data.aws_caller_identity.identity.account_id,
     partition : data.aws_partition.current.partition,
     region : var.region,
     bucket_arn : aws_s3_bucket.logs.arn,
     repository_name : "${local.prefix}-web",
+    db_instance_prefix : local.prefix,
   })
 }
 

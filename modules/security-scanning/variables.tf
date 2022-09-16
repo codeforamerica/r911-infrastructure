@@ -31,6 +31,7 @@ variable "key_recovery_period" {
 
 variable "notification_email" {
   type        = string
+  default     = ""
   description = "Email that all notifications should be sent to."
 }
 
