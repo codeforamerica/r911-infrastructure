@@ -10,10 +10,6 @@ resource "aws_route53_record" "web" {
   records = [aws_lb.web.dns_name]
 }
 
-data "dns_a_record_set" "web" {
-  host = aws_route53_record.web.name
-}
-
 resource "aws_acm_certificate" "web" {
   domain_name       = aws_route53_record.web.name
   validation_method = "DNS"
