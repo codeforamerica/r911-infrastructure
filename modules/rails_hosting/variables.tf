@@ -1,7 +1,19 @@
+variable "database_backup_retention" {
+  type        = number
+  default     = 7
+  description = "The number of days database backups should be retained."
+}
+
 variable "database_instances" {
   type        = number
   default     = 2
   description = "Number of Aurora instances to be launched in the database cluster."
+}
+
+variable "database_starting_snapshot" {
+  type        = string
+  default     = ""
+  description = "Optional snapshot to launch the database cluster from."
 }
 
 variable "database_username" {

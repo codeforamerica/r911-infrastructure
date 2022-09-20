@@ -8,6 +8,7 @@ resource "aws_security_group" "web_public" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
+    #tfsec:ignore:aws-ec2-no-public-ingress-sgr
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -16,6 +17,7 @@ resource "aws_security_group" "web_public" {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
+    #tfsec:ignore:aws-ec2-no-public-ingress-sgr
     cidr_blocks = ["0.0.0.0/0"]
   }
 

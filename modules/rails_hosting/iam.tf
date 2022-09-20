@@ -74,7 +74,7 @@ resource "aws_iam_role" "web_task" {
             "ses:SendRawEmail",
             "ses:SendTemplatedEmail"
           ]
-          Resource = "*"
+          Resource = aws_ses_domain_identity.email.arn
         }
       ]
     })

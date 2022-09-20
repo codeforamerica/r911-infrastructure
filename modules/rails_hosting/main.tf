@@ -1,5 +1,6 @@
 locals {
   container_log_group = "/aws/ecs/${var.project}/${var.environment}/web"
+  aws_logs_path       = "/AWSLogs/${data.aws_caller_identity.identity.account_id}"
   prefix              = "${var.project}-${var.environment}"
   rails_environment   = var.rails_environment != "" ? var.rails_environment : var.environment
   subdomain           = var.subdomain != "" ? var.subdomain : var.environment

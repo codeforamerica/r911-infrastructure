@@ -33,6 +33,18 @@
             ]
         }
       }
+    },
+    {
+      "Sid": "Allow services to publish to SNS",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "config.amazonaws.com"
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey*"
+      ],
+      "Resource": "*"
     }
   ]
 }

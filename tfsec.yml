@@ -1,0 +1,5 @@
+exclude:
+  # TODO: Configure egress to use NAT gateway and remove this exclusion.
+  - aws-ec2-no-public-egress-sgr
+  # If we want to use the common "latest" tag, we have to allow mutable tags.
+  - aws-ecr-enforce-immutable-repository

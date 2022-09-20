@@ -29,6 +29,7 @@ module "networking" {
   single_nat_gateway = true
 }
 
+#tfsec:ignore:aws-rds-specify-backup-retention
 module "hosting" {
   source     = "../../modules/rails_hosting"
   depends_on = [module.networking.vpc_id]
@@ -45,9 +46,15 @@ module "hosting" {
   skip_db_final_snapshot   = true
   enable_execute_command   = true
   passive_waf              = false
-  desired_containers       = 3
+  desired_containers       = 1
   idle_timeout             = 300
   deployment_rollback      = false
+
+  # We don't need to retain backups for long periods in dev.
+  database_backup_retention = 1
+
+  # Snapshot created in order to enable encryption at rest.
+  database_starting_snapshot = "r911-development-encrypt"
 
   environment_variables = {
     LAUNCHY_DRY_RUN : true,
@@ -73,5 +80,6 @@ module "ci_cd" {
   log_retention         = 1
   key_recovery_period   = 7
   image_repository_name = module.hosting.image_repository.name
+  logging_bucket        = module.hosting.logging_bucket.id
   web_security_group_id = module.hosting.web_security_group.id
 }

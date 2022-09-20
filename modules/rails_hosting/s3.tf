@@ -20,6 +20,7 @@ resource "aws_s3_bucket_acl" "logs" {
   acl    = "private"
 }
 
+#tfsec:ignore:aws-s3-encryption-customer-key
 resource "aws_s3_bucket_server_side_encryption_configuration" "logs" {
   bucket = aws_s3_bucket.logs.id
 
@@ -40,6 +41,12 @@ resource "aws_s3_bucket_versioning" "logs" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_logging" "logs" {
+  bucket        = aws_s3_bucket.logs.id
+  target_bucket = aws_s3_bucket.logs.id
+  target_prefix = "${local.aws_logs_path}/s3accesslogs/${aws_s3_bucket.logs.id}"
 }
 
 resource "aws_s3_bucket_policy" "logs" {
@@ -93,6 +100,12 @@ resource "aws_s3_bucket_versioning" "files" {
   versioning_configuration {
     status = "Enabled"
   }
+}
+
+resource "aws_s3_bucket_logging" "files" {
+  bucket        = aws_s3_bucket.files.id
+  target_bucket = aws_s3_bucket.logs.id
+  target_prefix = "${local.aws_logs_path}/s3accesslogs/${aws_s3_bucket.files.id}"
 }
 
 resource "aws_s3_bucket_policy" "files" {

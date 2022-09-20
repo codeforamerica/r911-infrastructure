@@ -84,6 +84,30 @@
       "Action": [
         "kms:GenerateDataKey*"
       ]
+    },
+    {
+      "Sid": "Allow RDS Performance Insights",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": [
+          "arn:${partition}:iam::${account_id}:root"
+        ]
+      },
+      "Action": [
+        "kms:Decrypt",
+        "kms:GenerateDataKey"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "kms:ViaService": "rds.${region}.amazonaws.com"
+        },
+        "ForAnyValue:StringLike": {
+          "kms:EncryptionContext:aws:pi:service": "rds",
+          "kms:EncryptionContext:service": "pi",
+          "kms:EncryptionContext:aws:rds:db-id": "${db_instance_prefix}-*"
+        }
+      }
     }
   ]
 }
