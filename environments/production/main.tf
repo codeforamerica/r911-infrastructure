@@ -41,6 +41,9 @@ module "hosting" {
   passive_waf              = true
   desired_containers       = 3
   idle_timeout             = 300
+  database_instances       = 1
+  database_max_capacity    = 3
+  database_min_capacity    = 2
 
   environment_variables = {
     LAUNCHY_DRY_RUN : true,

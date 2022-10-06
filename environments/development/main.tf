@@ -50,6 +50,10 @@ module "hosting" {
   idle_timeout             = 300
   deployment_rollback      = false
 
+  database_instances    = 1
+  database_max_capacity = 2
+  database_min_capacity = 2
+
   # We don't need to retain backups for long periods in dev.
   database_backup_retention = 1
 
