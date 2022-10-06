@@ -1,4 +1,6 @@
 resource "aws_serverlessapplicationrepository_cloudformation_stack" "db_master_rotation" {
+  depends_on = [aws_cloudwatch_log_group.logs, aws_security_group.db_access]
+
   name           = "${local.prefix}-db-secret-rotation"
   application_id = "arn:aws:serverlessrepo:us-east-1:297356227824:applications/SecretsManagerRDSPostgreSQLRotationSingleUser"
   capabilities = [
@@ -17,10 +19,8 @@ resource "aws_serverlessapplicationrepository_cloudformation_stack" "db_master_r
   lifecycle {
     # Terraform always sees parameters.excludeCharacters as changed for some
     # reason.
-    ignore_changes = [parameters]
+    ignore_changes = [parameters["excludeCharacters"]]
   }
-
-  depends_on = [aws_cloudwatch_log_group.logs]
 }
 
 resource "aws_secretsmanager_secret" "db_master" {
@@ -34,6 +34,7 @@ resource "aws_secretsmanager_secret" "db_master" {
     # changed, so we need to create a new secret when that happens.
     replace_triggered_by  = [aws_rds_cluster.db.endpoint]
     create_before_destroy = true
+    ignore_changes        = [name, name_prefix]
   }
 }
 

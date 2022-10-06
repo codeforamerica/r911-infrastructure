@@ -10,6 +10,18 @@ variable "database_instances" {
   description = "Number of Aurora instances to be launched in the database cluster."
 }
 
+variable "database_max_capacity" {
+  type        = number
+  default     = 16
+  description = "Maximum ACU capacity for database instances."
+}
+
+variable "database_min_capacity" {
+  type        = number
+  default     = 2
+  description = "Minimum ACU capacity for database instances."
+}
+
 variable "database_starting_snapshot" {
   type        = string
   default     = ""

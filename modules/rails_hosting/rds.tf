@@ -4,6 +4,8 @@ resource "aws_db_subnet_group" "db" {
 }
 
 resource "aws_rds_cluster" "db" {
+  depends_on = [aws_cloudwatch_log_group.logs, aws_security_group.db_access]
+
   cluster_identifier_prefix = "${local.prefix}-"
   db_subnet_group_name      = aws_db_subnet_group.db.name
   engine                    = "aurora-postgresql"
@@ -24,16 +26,14 @@ resource "aws_rds_cluster" "db" {
   enabled_cloudwatch_logs_exports = ["postgresql"]
 
   serverlessv2_scaling_configuration {
-    min_capacity = 2
-    max_capacity = 16
+    min_capacity = var.database_min_capacity
+    max_capacity = var.database_max_capacity
   }
 
   lifecycle {
     create_before_destroy = true
     ignore_changes        = [cluster_identifier_prefix, master_password]
   }
-
-  depends_on = [aws_cloudwatch_log_group.logs]
 }
 
 resource "aws_rds_cluster_instance" "db" {
