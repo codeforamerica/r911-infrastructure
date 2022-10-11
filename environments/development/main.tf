@@ -87,3 +87,37 @@ module "ci_cd" {
   logging_bucket        = module.hosting.logging_bucket.id
   web_security_group_id = module.hosting.web_security_group.id
 }
+
+module "data_lake" {
+  source = "../../modules/data_lake"
+
+  project        = local.project
+  region         = local.region
+  environment    = local.environment
+  logging_bucket = module.hosting.logging_bucket.id
+}
+
+module "data_warehouse" {
+  source = "../../modules/data_warehouse"
+
+  project        = local.project
+  environment    = local.environment
+  vpc_id         = module.networking.vpc_id
+  encryption_key = module.data_lake.encryption_key.arn
+  logging_bucket = module.hosting.logging_bucket.id
+  url_domain     = "nprd.classifyr.org"
+}
+
+module "etl" {
+  source = "../../modules/etl"
+
+  project        = local.project
+  environment    = local.environment
+  vpc_id         = module.networking.vpc_id
+  logging_bucket = module.hosting.logging_bucket.id
+
+  warehouse_endpoint           = module.data_warehouse.cluster.endpoint[0]
+  warehouse_credentials_secret = module.data_warehouse.crednetials_secret.name
+  data_lake_bucket             = module.data_lake.bucket.bucket
+  encryption_key               = module.data_lake.encryption_key.arn
+}

@@ -28,9 +28,9 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "logs" {
     bucket_key_enabled = true
 
     apply_server_side_encryption_by_default {
-      # We have to use the AWS managed key here as some services don't support
-      # writing to s3 with a customer managed key (CMK).
-      sse_algorithm = "aws:kms"
+      # We have to use AES256 here as some services don't support writing to s3
+      # with a customer managed key (CMK).
+      sse_algorithm = "AES256"
     }
   }
 }

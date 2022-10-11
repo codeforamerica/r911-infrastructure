@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "solutions-eng-sandbox-terraform"
-    key    = "non-prod/terraform.tfstate"
+    key    = "sandbox/terraform.tfstate"
     region = "us-east-1"
   }
 }
