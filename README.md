@@ -4,7 +4,7 @@ This repository includes the infrastructure as code (IaC) for Code for America's
 Reimagine911 project. The infrastructure components are modularized, allowing
 them to be reused as needed.
 
-![][1]
+![Reimagine911 infrastructure architecture diagram][1]
 
 ## Accounts
 
@@ -23,8 +23,11 @@ pipeline.
 |-------------------|-----------------------------------------------------------------------|
 | backend           | Teraform backend configuration.                                       |
 | ci_cd             | Ci/CD pipeline using CodePipeline.                                    |
+| data_lake         | Data lake configuration using LakeFormation and S3.                   |
+| data_warehouse    | Data warehouse configuration using Redshift.                          |
+| etl               | ETL pipeline include PySpark scripts using AWS Glue.                  |
 | networking        | VPC, subnets, and related routing confiigurations.                    |
 | rails_hosting     | Ruby on Rails hosting on ECS Fargate with Aurora Postgres serverless. |
 | security_scanning | Account security scanning configuration using Security Hub.           |
 
-[1]: https://lucid.app/publicSegments/view/cb1e828c-2415-407c-be2b-abe564f5c42b/image.png
+[1]: https://lucid.app/publicSegments/view/4fa858aa-7b40-4f16-81d8-186aebce330c/image.png
