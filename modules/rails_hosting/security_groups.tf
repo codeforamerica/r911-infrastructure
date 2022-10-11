@@ -1,5 +1,5 @@
 resource "aws_security_group" "web_public" {
-  name        = "${local.prefix}-web-public"
+  name_prefix = "${local.prefix}-web-public-"
   description = "Allow inbound public web traffic."
   vpc_id      = var.vpc_id
 
@@ -39,7 +39,7 @@ resource "aws_security_group" "web_public" {
 }
 
 resource "aws_security_group" "web_private" {
-  name        = "${local.prefix}-web-privaye"
+  name_prefix = "${local.prefix}-web-private-"
   description = "Allows traffic within the VPC to reach the web tier."
   vpc_id      = var.vpc_id
 
@@ -72,10 +72,14 @@ resource "aws_security_group" "web_private" {
   tags = {
     Name = "${local.prefix}-web-private"
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_security_group" "db_access" {
-  name        = "${local.prefix}-db-access"
+  name_prefix = "${local.prefix}-db-access-"
   description = "Allow access to the database cluster."
   vpc_id      = var.vpc_id
 
@@ -98,5 +102,9 @@ resource "aws_security_group" "db_access" {
 
   tags = {
     Name = "${local.prefix}-db-access"
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
