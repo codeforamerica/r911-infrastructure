@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  ind-modules:
+  find-modules:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source code
