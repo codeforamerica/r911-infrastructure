@@ -15,6 +15,12 @@ variable "environment" {
   description = "Environment for this deployment. If this is different than the Rails environment, pleas set rails_environment."
 }
 
+variable "force_delete" {
+  type        = bool
+  default     = false
+  description = "Forcefully delete resources. USE WITH CAUTION!"
+}
+
 variable "image_repository_name" {
   type        = string
   description = "Name of the ECR repository for the application container."

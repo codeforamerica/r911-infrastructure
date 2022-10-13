@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "etl" {
-  bucket = "${local.prefix}-etl"
+  bucket        = "${local.prefix}-etl"
+  force_destroy = var.force_delete
 
   lifecycle {
     prevent_destroy = true

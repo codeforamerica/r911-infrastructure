@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "logs" {
-  bucket = "${local.prefix}-logs"
+  bucket        = "${local.prefix}-logs"
+  force_destroy = var.force_delete
 
   lifecycle {
     prevent_destroy = true
@@ -60,7 +61,8 @@ resource "aws_s3_bucket_policy" "logs" {
 }
 
 resource "aws_s3_bucket" "files" {
-  bucket = "${local.prefix}-files"
+  bucket        = "${local.prefix}-files"
+  force_destroy = var.force_delete
 
   lifecycle {
     prevent_destroy = true
