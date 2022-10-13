@@ -62,7 +62,7 @@ resource "aws_ecs_service" "web" {
   enable_ecs_managed_tags           = true
   propagate_tags                    = "SERVICE"
   health_check_grace_period_seconds = 500
-  desired_count                     = var.desired_containers
+  desired_count                     = var.containers_min_capacity
   launch_type                       = "FARGATE"
   enable_execute_command            = var.enable_execute_command
 
@@ -85,6 +85,14 @@ resource "aws_ecs_service" "web" {
 
   # We need to wait for the target group to be attached to the load balancer.
   depends_on = [aws_lb_listener.web_https]
+}
+
+resource "aws_appautoscaling_target" "web" {
+  max_capacity       = var.containers_max_capacity
+  min_capacity       = var.containers_min_capacity
+  resource_id        = "service/${aws_ecs_cluster.web.name}/${aws_ecs_service.web.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
 }
 
 resource "aws_ecs_task_definition" "db_migrate" {
