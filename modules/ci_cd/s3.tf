@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "artifacts" {
-  bucket = "${local.prefix}-artifacts"
+  bucket        = "${local.prefix}-artifacts"
+  force_destroy = var.force_delete
 
   lifecycle {
     prevent_destroy = true

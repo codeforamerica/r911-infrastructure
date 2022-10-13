@@ -1,5 +1,6 @@
 resource "aws_s3_bucket" "lake" {
-  bucket = "${local.prefix}-lake"
+  bucket        = "${local.prefix}-lake"
+  force_destroy = var.force_delete
 
   lifecycle {
     prevent_destroy = true
