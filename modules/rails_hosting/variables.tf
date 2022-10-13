@@ -1,3 +1,15 @@
+variable "containers_max_capacity" {
+  type        = string
+  default     = 6
+  description = "Maximum running containers to server the application."
+}
+
+variable "containers_min_capacity" {
+  type        = string
+  default     = 3
+  description = "Minimum running containers to server the application."
+}
+
 variable "database_backup_retention" {
   type        = number
   default     = 7
@@ -38,12 +50,6 @@ variable "deployment_rollback" {
   type        = bool
   default     = false
   description = "Whether or not to perform a rollback when a Fargate deployment fails."
-}
-
-variable "desired_containers" {
-  type        = string
-  default     = 3
-  description = "Desired number of containers to server the application."
 }
 
 variable "enable_execute_command" {

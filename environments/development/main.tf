@@ -46,7 +46,8 @@ module "hosting" {
   skip_db_final_snapshot   = true
   enable_execute_command   = true
   passive_waf              = false
-  desired_containers       = 1
+  containers_max_capacity  = 1
+  containers_min_capacity  = 1
   idle_timeout             = 300
   deployment_rollback      = false
 
