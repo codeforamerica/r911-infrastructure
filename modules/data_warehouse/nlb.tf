@@ -1,11 +1,11 @@
 locals {
-  warehouse_interfaces = distinct(flatten([
+  warehouse_interfaces = toset(distinct(flatten([
     for endpoint in aws_redshiftserverless_workgroup.warehouse.endpoint : [
       for vpc_endpoint in endpoint.vpc_endpoint : [
-        for interface in vpc_endpoint.network_interface : interface
+        for interface in vpc_endpoint.network_interface : interface.private_ip_address
       ]
     ]
-  ]))
+  ])))
 }
 
 resource "aws_lb_target_group" "warehouse" {
@@ -27,10 +27,10 @@ resource "aws_lb_target_group" "warehouse" {
 
 resource "aws_lb_target_group_attachment" "warehouse" {
   depends_on = [aws_redshiftserverless_workgroup.warehouse]
-  count      = length(local.warehouse_interfaces)
+  for_each   = local.warehouse_interfaces
 
   target_group_arn = aws_lb_target_group.warehouse.arn
-  target_id        = local.warehouse_interfaces[count.index].private_ip_address
+  target_id        = each.value
   port             = 5439
 }
 
