@@ -7,6 +7,8 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+# TODO: Setup VPC flow logs.
+#tfsec:ignore:aws-ec2-require-vpc-flow-logs-for-all-vpcs
 resource "aws_vpc" "vpc" {
   cidr_block           = var.cidr_block
   enable_dns_support   = true

@@ -50,8 +50,10 @@ resource "aws_s3_bucket_logging" "config" {
 resource "aws_s3_bucket_policy" "config" {
   bucket = aws_s3_bucket.config.id
   policy = templatefile("${path.module}/templates/bucket-policy.json.tftpl", {
-    account : data.aws_caller_identity.identity.account_id
-    partition : data.aws_partition.current.partition
-    bucket : aws_s3_bucket.config.bucket
+    account : data.aws_caller_identity.identity.account_id,
+    partition : data.aws_partition.current.partition,
+    bucket : aws_s3_bucket.config.bucket,
+    region : var.region,
+    prefix : local.prefix,
   })
 }
