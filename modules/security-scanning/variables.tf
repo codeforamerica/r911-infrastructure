@@ -29,6 +29,12 @@ variable "key_recovery_period" {
   }
 }
 
+variable "log_retention" {
+  type        = number
+  default     = 7
+  description = "Number of days logs are retained (0 for indefinite)."
+}
+
 variable "notification_email" {
   type        = string
   default     = ""

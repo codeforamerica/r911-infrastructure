@@ -23,7 +23,8 @@ module "backend" {
 module "security-scanning" {
   source = "../../modules/security-scanning"
 
-  project     = local.project
-  region      = local.region
-  environment = local.environment
+  project       = local.project
+  region        = local.region
+  environment   = local.environment
+  log_retention = 30
 }

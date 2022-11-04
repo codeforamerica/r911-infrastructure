@@ -13,8 +13,9 @@ resource "aws_kms_key" "security" {
   enable_key_rotation     = true
   policy = templatefile("${path.module}/templates/key-policy.json.tftpl", {
     account_id : data.aws_caller_identity.identity.account_id,
+    bucket_arn : aws_s3_bucket.config.arn,
     partition : data.aws_partition.current.partition,
-    bucket_arn : aws_s3_bucket.config.arn
+    region : var.region,
   })
 }
 
@@ -33,4 +34,16 @@ resource "aws_securityhub_standards_subscription" "aws" {
 resource "aws_securityhub_standards_subscription" "cis" {
   depends_on    = [aws_securityhub_account.account]
   standards_arn = "arn:aws:securityhub:::ruleset/cis-aws-foundations-benchmark/v/1.2.0"
+}
+
+resource "aws_cloudtrail" "trail" {
+  depends_on = [aws_s3_bucket_policy.config]
+
+  name                       = local.prefix
+  is_multi_region_trail      = true
+  s3_bucket_name             = aws_s3_bucket.config.bucket
+  cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.logs["/aws/cloudtrail"].arn}:*"
+  cloud_watch_logs_role_arn  = aws_iam_role.cloudtrail.arn
+  kms_key_id                 = aws_kms_key.security.arn
+  enable_log_file_validation = true
 }
