@@ -1,3 +1,8 @@
+variable "data_lake_bucket" {
+  type        = string
+  description = "Name of the bucket to be used as a data lake."
+}
+
 variable "encryption_key" {
   type        = string
   description = "ARN of the KMS key to use for encryption."
