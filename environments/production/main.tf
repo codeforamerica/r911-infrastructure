@@ -87,12 +87,13 @@ module "data_lake" {
 module "data_warehouse" {
   source = "../../modules/data_warehouse"
 
-  project        = local.project
-  environment    = local.environment
-  vpc_id         = module.networking.vpc_id
-  encryption_key = module.data_lake.encryption_key.arn
-  logging_bucket = module.hosting.logging_bucket.id
-  url_domain     = "classifyr.org"
+  project          = local.project
+  environment      = local.environment
+  vpc_id           = module.networking.vpc_id
+  encryption_key   = module.data_lake.encryption_key.arn
+  logging_bucket   = module.hosting.logging_bucket.id
+  url_domain       = "classifyr.org"
+  data_lake_bucket = module.data_lake.bucket.bucket
 }
 
 module "etl" {

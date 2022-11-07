@@ -47,3 +47,7 @@ resource "aws_cloudtrail" "trail" {
   kms_key_id                 = aws_kms_key.security.arn
   enable_log_file_validation = true
 }
+
+resource "aws_ebs_encryption_by_default" "ebs" {
+  enabled = true
+}
