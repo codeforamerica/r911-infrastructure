@@ -51,11 +51,11 @@ resource "aws_iam_role" "cloudtrail" {
     ]
   })
 
-
+  managed_policy_arns = [aws_iam_policy.cloudtrail_to_cloudwatch.arn]
 }
 
 resource "aws_iam_policy" "cloudtrail_to_cloudwatch" {
-  name = "${local.prefix}-cloudtrail_to_cloudwatch"
+  name = "${local.prefix}-cloudtrail-to-cloudwatch"
 
   policy = templatefile("${path.module}/templates/cloudtrail-to-cloudwatch-policy.json.tftpl", {
     log_group : aws_cloudwatch_log_group.logs["/aws/cloudtrail"].arn,
