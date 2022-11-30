@@ -38,7 +38,6 @@ module "hosting" {
   secret_recovery_period   = 0
   skip_db_final_snapshot   = false
   enable_execute_command   = true
-  passive_waf              = true
   containers_max_capacity  = 3
   containers_min_capacity  = 1
   idle_timeout             = 300
