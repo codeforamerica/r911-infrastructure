@@ -66,6 +66,11 @@ locals {
       script : "scripts/arizona-phoenix.py",
       workers : 2,
     },
+    florida-gainesville : {
+      name : "florida-gainesville",
+      script : "scripts/florida-gainesville.py"
+      workers : 2,
+    },
     louisiana-new-orleans : {
       name : "louisiana-new-orleans",
       script : "scripts/louisiana-new-orleans.py",
