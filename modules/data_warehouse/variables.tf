@@ -1,3 +1,9 @@
+variable "base_rpu" {
+  type = number
+  default = 32
+  description = "The base Redshift processing units (RSU) to assign to the Redshift cluster."
+}
+
 variable "data_lake_bucket" {
   type        = string
   description = "Name of the bucket to be used as a data lake."

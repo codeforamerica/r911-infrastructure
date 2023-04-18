@@ -45,6 +45,9 @@ module "hosting" {
   database_max_capacity    = 3
   database_min_capacity    = 2
 
+  # Snapshot created in order to enable encryption at rest.
+  database_starting_snapshot = "r911-production-encrypt"
+
   environment_variables = {
     LAUNCHY_DRY_RUN : true,
     BROWSER : "/dev/null",

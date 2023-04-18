@@ -10,9 +10,9 @@ resource "aws_rds_cluster" "db" {
   db_subnet_group_name      = aws_db_subnet_group.db.name
   engine                    = "aurora-postgresql"
   engine_mode               = "provisioned"
-  engine_version            = "14.3"
   vpc_security_group_ids    = [aws_security_group.db_access.id]
   skip_final_snapshot       = var.skip_db_final_snapshot
+  final_snapshot_identifier = "${local.prefix}-final-snapshot"
   copy_tags_to_snapshot     = true
   snapshot_identifier       = var.database_starting_snapshot
 
@@ -32,7 +32,7 @@ resource "aws_rds_cluster" "db" {
 
   lifecycle {
     create_before_destroy = true
-    ignore_changes        = [cluster_identifier_prefix, master_password]
+    ignore_changes        = [master_password]
   }
 }
 
