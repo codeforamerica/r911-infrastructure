@@ -11,6 +11,7 @@ resource "aws_redshiftserverless_namespace" "warehouse" {
 resource "aws_redshiftserverless_workgroup" "warehouse" {
   namespace_name       = aws_redshiftserverless_namespace.warehouse.namespace_name
   workgroup_name       = "${local.prefix}-warehouse"
+  base_capacity        = var.base_rpu
   enhanced_vpc_routing = true
   publicly_accessible  = false
   security_group_ids = [
