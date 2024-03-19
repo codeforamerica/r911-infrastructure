@@ -70,7 +70,11 @@ resource "aws_wafv2_web_acl" "web" {
         name        = "AWSManagedRulesCommonRuleSet"
         vendor_name = "AWS"
 
-        excluded_rule {
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
           name = "SizeRestrictions_BODY"
         }
       }

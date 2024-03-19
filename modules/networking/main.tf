@@ -120,7 +120,6 @@ resource "aws_internet_gateway" "internet_gateway" {
 
 resource "aws_eip" "nat_gateway_ip" {
   count = var.single_nat_gateway ? 1 : var.availability_zones
-  vpc   = true
 
   tags = {
     Name = "${local.prefix}-nat-${aws_subnet.public[count.index].availability_zone}"

@@ -6,3 +6,7 @@
 .terraform/
 *.tfstate
 *.tfstate.backup
+
+# Ignore local environment files.
+.env.*
+*.env

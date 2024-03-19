@@ -6,10 +6,5 @@ terraform {
       version = ">= 4.22"
       source  = "hashicorp/aws"
     }
-
-    template = {
-      version = ">= 2.2"
-      source  = "hashicorp/template"
-    }
   }
 }

@@ -45,6 +45,8 @@ module "hosting" {
   database_max_capacity    = 3
   database_min_capacity    = 2
 
+  force_delete = true
+
   # Snapshot created in order to enable encryption at rest.
   database_starting_snapshot = "r911-production-encrypt"
 
@@ -74,6 +76,8 @@ module "ci_cd" {
   image_repository_name = module.hosting.image_repository.name
   logging_bucket        = module.hosting.logging_bucket.id
   web_security_group_id = module.hosting.web_security_group.id
+
+  force_delete = true
 }
 
 module "data_lake" {
@@ -84,6 +88,8 @@ module "data_lake" {
   environment      = local.environment
   logging_bucket   = module.hosting.logging_bucket.id
   admin_user_group = "Admin"
+
+  force_delete = true
 }
 
 module "data_warehouse" {
@@ -105,6 +111,8 @@ module "etl" {
   environment    = local.environment
   vpc_id         = module.networking.vpc_id
   logging_bucket = module.hosting.logging_bucket.id
+
+  force_delete = true
 
   warehouse_endpoint           = module.data_warehouse.cluster.endpoint[0]
   warehouse_credentials_secret = module.data_warehouse.crednetials_secret.name
